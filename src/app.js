@@ -1,3 +1,4 @@
+const path = require('node:path');
 const express = require('express');
 
 const InMemoryRepository = require('./repositories/InMemoryRepository');
@@ -11,6 +12,8 @@ const criarAutomoveisRouter = require('./routes/automoveisRouter');
 const criarMotoristasRouter = require('./routes/motoristasRouter');
 const criarUtilizacoesRouter = require('./routes/utilizacoesRouter');
 const { errorHandler, rotaNaoEncontrada } = require('./middlewares/errorHandler');
+
+const PASTA_FRONTEND = path.join(__dirname, '..', 'frontend');
 
 /**
  * Monta a aplicação Express com todas as dependências.
@@ -35,12 +38,9 @@ function criarApp() {
   const app = express();
   app.use(express.json());
 
-  app.get('/', (req, res) => {
-    res.json({
-      nome: 'API de Controle de Utilização de Automóveis',
-      recursos: ['/automoveis', '/motoristas', '/utilizacoes'],
-    });
-  });
+  // Interface web simples (pasta frontend/), servida como arquivos estáticos
+  // pelo mesmo servidor da API: GET / entrega o frontend/index.html.
+  app.use(express.static(PASTA_FRONTEND));
 
   app.use('/automoveis', criarAutomoveisRouter(criarAutomovelController(automovelService)));
   app.use('/motoristas', criarMotoristasRouter(criarMotoristaController(motoristaService)));

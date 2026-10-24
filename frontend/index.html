@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Automóveis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Controle de Utilização de Automóveis</h1>
+    <nav>
+      <button type="button" class="tab active" data-tab="utilizacoes">Utilizações</button>
+      <button type="button" class="tab" data-tab="automoveis">Automóveis</button>
+      <button type="button" class="tab" data-tab="motoristas">Motoristas</button>
+    </nav>
+  </header>
+
+  <div id="mensagem" class="mensagem" role="status" hidden></div>
+
+  <main>
+    <!-- ================= Utilizações ================= -->
+    <section id="tab-utilizacoes" class="painel">
+      <div class="card">
+        <h2>Iniciar utilização</h2>
+        <form id="form-utilizacao">
+          <label>Motorista
+            <select name="motoristaId" required></select>
+          </label>
+          <label>Automóvel
+            <select name="automovelId" required></select>
+          </label>
+          <label>Motivo
+            <input name="motivo" required placeholder="Ex.: visita a cliente">
+          </label>
+          <label>Data de início (opcional, padrão: agora)
+            <input type="datetime-local" name="dataInicio">
+          </label>
+          <button type="submit">Iniciar utilização</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Registros de utilização</h2>
+        <div class="tabela">
+          <table id="tabela-utilizacoes">
+            <thead>
+              <tr>
+                <th>Motorista</th>
+                <th>Automóvel</th>
+                <th>Início</th>
+                <th>Término</th>
+                <th>Motivo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Automóveis ================= -->
+    <section id="tab-automoveis" class="painel" hidden>
+      <div class="card">
+        <h2 id="titulo-form-automovel">Cadastrar automóvel</h2>
+        <form id="form-automovel">
+          <input type="hidden" name="id">
+          <label>Placa
+            <input name="placa" required placeholder="ABC1D23">
+          </label>
+          <label>Cor
+            <input name="cor" required placeholder="Preto">
+          </label>
+          <label>Marca
+            <input name="marca" required placeholder="Toyota">
+          </label>
+          <div class="acoes">
+            <button type="submit">Salvar</button>
+            <button type="button" id="cancelar-automovel" class="secundario" hidden>Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Automóveis cadastrados</h2>
+        <form id="filtro-automoveis" class="filtros">
+          <input name="cor" placeholder="Filtrar por cor">
+          <input name="marca" placeholder="Filtrar por marca">
+          <div class="acoes">
+            <button type="submit">Filtrar</button>
+            <button type="reset" class="secundario">Limpar</button>
+          </div>
+        </form>
+        <div class="tabela">
+          <table id="tabela-automoveis">
+            <thead>
+              <tr><th>Placa</th><th>Cor</th><th>Marca</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Motoristas ================= -->
+    <section id="tab-motoristas" class="painel" hidden>
+      <div class="card">
+        <h2 id="titulo-form-motorista">Cadastrar motorista</h2>
+        <form id="form-motorista">
+          <input type="hidden" name="id">
+          <label>Nome
+            <input name="nome" required placeholder="Maria Silva">
+          </label>
+          <div class="acoes">
+            <button type="submit">Salvar</button>
+            <button type="button" id="cancelar-motorista" class="secundario" hidden>Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Motoristas cadastrados</h2>
+        <form id="filtro-motoristas" class="filtros">
+          <input name="nome" placeholder="Filtrar por nome">
+          <div class="acoes">
+            <button type="submit">Filtrar</button>
+            <button type="reset" class="secundario">Limpar</button>
+          </div>
+        </form>
+        <div class="tabela">
+          <table id="tabela-motoristas">
+            <thead>
+              <tr><th>Nome</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -38,6 +38,21 @@ Para desenvolvimento, com reinício automático a cada alteração nos arquivos:
 npm run dev
 ```
 
+## Interface web
+
+Com o servidor no ar, abra `http://localhost:3000` no navegador. A pasta [`frontend/`](frontend/)
+contém uma interface simples em HTML, CSS e JavaScript puro (sem framework e sem etapa de build),
+servida como arquivos estáticos pelo próprio Express, por isso não precisa de CORS nem de outro
+servidor. Ela cobre todas as funcionalidades da API em três abas:
+
+- **Utilizações**: iniciar uma utilização escolhendo motorista e automóvel, informar o motivo e,
+  opcionalmente, a data de início; listar os registros com o nome do motorista e os dados do
+  automóvel; finalizar os que estão em andamento.
+- **Automóveis**: cadastrar, editar, excluir e filtrar por cor e marca.
+- **Motoristas**: cadastrar, editar, excluir e filtrar por nome.
+
+As mensagens de erro da API (campos inválidos e regras de negócio) são exibidas na própria tela.
+
 ## Como testar
 
 ```bash
@@ -192,6 +207,10 @@ src/
   controllers/      # traduzem requisição HTTP em chamada ao serviço e vice-versa
   routes/           # definição das rotas de cada recurso
   middlewares/      # tratamento centralizado de erros e rota não encontrada
+frontend/
+  index.html        # interface web: abas de utilizações, automóveis e motoristas
+  styles.css        # estilos da interface
+  app.js            # chamadas à API e atualização das telas
 tests/
   unit/             # repositório e serviços
   integration/      # rotas HTTP com Supertest
@@ -210,6 +229,8 @@ requests.http       # exemplos de requisições para testes manuais
   por um único middleware, sem `try/catch` espalhado pelo código.
 - **Atualização parcial** no `PUT`: apenas os campos enviados são alterados, com ao menos um
   campo válido obrigatório.
+- **Frontend servido pelo Express** como arquivos estáticos: uma única porta, sem CORS e sem
+  build. Os arquivos ficam isolados em `frontend/`, e a API continua funcionando sem eles.
 - **Utilização guarda só os ids** de motorista e automóvel e junta os dados na leitura. Se um
   cadastro for excluído depois de a utilização ter sido finalizada, o campo correspondente vem
   como `null` em vez de quebrar a listagem.
