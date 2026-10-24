@@ -8,6 +8,50 @@ e um motorista de usar dois automóveis simultaneamente.
 A persistência é **em memória** (os dados são perdidos ao reiniciar o servidor), conforme permitido
 no enunciado do teste.
 
+## Sumário
+
+- [Início rápido](#início-rápido)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Como executar](#como-executar)
+- [Interface web](#interface-web)
+- [Como testar](#como-testar)
+- [Endpoints](#endpoints)
+- [Regras de negócio](#regras-de-negócio)
+- [Respostas de erro](#respostas-de-erro)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Decisões de projeto](#decisões-de-projeto)
+
+## Início rápido
+
+Pré-requisito: Node.js 18 ou superior (com npm).
+
+```bash
+git clone https://github.com/ppBernardo/Teste-Seidor.git
+cd Teste-Seidor
+npm install
+npm start
+```
+
+Depois abra `http://localhost:3000` para usar a interface web ou chame a API diretamente
+(por exemplo, `curl http://localhost:3000/automoveis`). Para rodar os testes: `npm test`.
+
+## Funcionalidades
+
+| Requisito do teste                                                          | Onde está                                   |
+| --------------------------------------------------------------------------- | ------------------------------------------- |
+| Cadastrar, atualizar, excluir e recuperar automóvel por id                  | `POST`, `PUT`, `DELETE`, `GET /automoveis/:id` |
+| Listar automóveis filtrando por cor e marca                                 | `GET /automoveis?cor=&marca=`               |
+| Cadastrar, atualizar, excluir e recuperar motorista por id                  | `POST`, `PUT`, `DELETE`, `GET /motoristas/:id` |
+| Listar motoristas filtrando por nome                                        | `GET /motoristas?nome=`                     |
+| Criar registro de utilização (motorista, automóvel, data de início, motivo) | `POST /utilizacoes`                         |
+| Finalizar utilização guardando a data de término                            | `PATCH /utilizacoes/:id/finalizar`          |
+| Listar utilizações com nome do motorista e dados do automóvel               | `GET /utilizacoes`                          |
+| Um automóvel só pode ser utilizado por um motorista por vez                 | Regra em `UtilizacaoService` (responde 409) |
+| Um motorista não pode utilizar dois automóveis ao mesmo tempo               | Regra em `UtilizacaoService` (responde 409) |
+| Persistência em memória                                                     | `InMemoryRepository`                        |
+| Testes de unidade                                                           | `npm test` (Jest + Supertest)               |
+
 ## Tecnologias
 
 | Item          | Versão / observação                              |
@@ -45,6 +89,8 @@ contém uma interface simples em HTML, CSS e JavaScript puro (sem framework e se
 servida como arquivos estáticos pelo próprio Express, por isso não precisa de CORS nem de outro
 servidor. Ela cobre todas as funcionalidades da API em três abas:
 
+![Tela de utilizações da interface web](docs/interface.jpg)
+
 - **Utilizações**: iniciar uma utilização escolhendo motorista e automóvel, informar o motivo e,
   opcionalmente, a data de início; listar os registros com o nome do motorista e os dados do
   automóvel; finalizar os que estão em andamento.
@@ -52,6 +98,16 @@ servidor. Ela cobre todas as funcionalidades da API em três abas:
 - **Motoristas**: cadastrar, editar, excluir e filtrar por nome.
 
 As mensagens de erro da API (campos inválidos e regras de negócio) são exibidas na própria tela.
+
+Passo a passo sugerido para experimentar:
+
+1. Na aba **Motoristas**, cadastre um motorista (ex.: "Maria Silva").
+2. Na aba **Automóveis**, cadastre um automóvel (ex.: placa `ABC1D23`, cor Preto, marca Toyota).
+3. Na aba **Utilizações**, escolha o motorista e o automóvel, informe o motivo e clique em
+   **Iniciar utilização**. O registro aparece na tabela como "Em andamento".
+4. Tente iniciar outra utilização com o mesmo motorista ou com o mesmo automóvel: a regra de
+   negócio é aplicada e o aviso de erro aparece no canto da tela.
+5. Clique em **Finalizar** na linha do registro para gravar a data de término.
 
 ## Como testar
 
@@ -214,6 +270,7 @@ frontend/
 tests/
   unit/             # repositório e serviços
   integration/      # rotas HTTP com Supertest
+docs/interface.jpg  # captura da interface usada neste README
 requests.http       # exemplos de requisições para testes manuais
 ```
 
