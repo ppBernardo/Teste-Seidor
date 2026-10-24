@@ -1,0 +1,96 @@
+### Arquivo de exemplos para a extensão "REST Client" do VS Code.
+### Substitua os ids pelos valores devolvidos nas respostas de cadastro.
+
+@baseUrl = http://localhost:3000
+@automovelId = COLE_O_ID_AQUI
+@motoristaId = COLE_O_ID_AQUI
+@utilizacaoId = COLE_O_ID_AQUI
+
+### ---------- Automóveis ----------
+
+### Cadastrar automóvel
+POST {{baseUrl}}/automoveis
+Content-Type: application/json
+
+{
+  "placa": "ABC1D23",
+  "cor": "Preto",
+  "marca": "Toyota"
+}
+
+### Listar automóveis (sem filtro)
+GET {{baseUrl}}/automoveis
+
+### Listar automóveis filtrando por cor e marca
+GET {{baseUrl}}/automoveis?cor=preto&marca=toyota
+
+### Buscar automóvel por id
+GET {{baseUrl}}/automoveis/{{automovelId}}
+
+### Atualizar automóvel (apenas os campos enviados)
+PUT {{baseUrl}}/automoveis/{{automovelId}}
+Content-Type: application/json
+
+{
+  "cor": "Azul"
+}
+
+### Excluir automóvel
+DELETE {{baseUrl}}/automoveis/{{automovelId}}
+
+### ---------- Motoristas ----------
+
+### Cadastrar motorista
+POST {{baseUrl}}/motoristas
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva"
+}
+
+### Listar motoristas (sem filtro)
+GET {{baseUrl}}/motoristas
+
+### Listar motoristas filtrando por nome
+GET {{baseUrl}}/motoristas?nome=maria
+
+### Buscar motorista por id
+GET {{baseUrl}}/motoristas/{{motoristaId}}
+
+### Atualizar motorista
+PUT {{baseUrl}}/motoristas/{{motoristaId}}
+Content-Type: application/json
+
+{
+  "nome": "Maria Souza"
+}
+
+### Excluir motorista
+DELETE {{baseUrl}}/motoristas/{{motoristaId}}
+
+### ---------- Utilizações ----------
+
+### Iniciar utilização (dataInicio é opcional; padrão: agora)
+POST {{baseUrl}}/utilizacoes
+Content-Type: application/json
+
+{
+  "motoristaId": "{{motoristaId}}",
+  "automovelId": "{{automovelId}}",
+  "motivo": "Visita a cliente",
+  "dataInicio": "2026-10-23T08:00:00.000Z"
+}
+
+### Finalizar utilização (dataTermino é opcional; padrão: agora)
+PATCH {{baseUrl}}/utilizacoes/{{utilizacaoId}}/finalizar
+Content-Type: application/json
+
+{
+  "dataTermino": "2026-10-23T09:30:00.000Z"
+}
+
+### Listar utilizações (com nome do motorista e dados do automóvel)
+GET {{baseUrl}}/utilizacoes
+
+### Buscar utilização por id
+GET {{baseUrl}}/utilizacoes/{{utilizacaoId}}
